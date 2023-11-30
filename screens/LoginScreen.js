@@ -47,7 +47,6 @@ export default function LoginScreen({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-        <StatusBar hidden/>
         <View>
             <KeyboardAwareScrollView >
                 <View style={{alignItems: 'center'}}>

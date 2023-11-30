@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, Text, FlatList, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, FlatList, View, StatusBar } from "react-native";
 import React, { useContext } from "react";
 import Button from "../components/Button";
 import { Ionicons } from "react-native-vector-icons";
@@ -72,7 +72,8 @@ const styles = StyleSheet.create({
   header: {
     flex: 0.45,
     alignItems: "center",
-    paddingVertical: SIZES.padding,
+    paddingTop: SIZES.padding4,
+    marginVertical: SIZES.padding,
   },
   
   listHeader: {

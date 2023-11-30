@@ -1,21 +1,67 @@
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Ionicons } from "react-native-vector-icons";
 import { FONTS, SIZES, COLORS } from "../constants/theme";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 
 export default function AddItemScreen({ navigation }) {
+  const [itemName, setItemName] = useState('')
+  const [quantity, setQuantity] = useState('');
+  const [price, setPrice] = useState('');
+  const [unit, setUnit] = useState("");
+
+  const handleItemName = (text) => setItemName(text);
+  const handleQuantity = (text) => {
+    const qtyValue = parseFloat(text);
+    if (isNaN(qtyValue)) {
+      setQuantity("invalid input");
+    } else {
+      setQuantity(qtyValue);
+    }
+  };
+  const handlePrice = (text) => {
+    const priceValue = parseFloat(text);
+    if (isNaN(priceValue)) {
+      setPrice("Invalid input");
+    } else {
+      setPrice(priceValue);
+    }
+  };
+  const handleUnit = (text) => setUnit(text);
+
+  const collectFormData = () => {
+    return {
+      itemName,
+      quantity,
+      price,
+      unit,
+    };
+  };
+
+  const handleSubmit = () => {
+    const formData = collectFormData();
+    navigation.navigate("ItemList", { formData });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container1}>
-        <Ionicons style={{ marginTop: 25, marginStart: 15}}
+        <Ionicons
+          style={{ marginTop: 35, marginStart: 15 }}
           name="arrow-back-outline"
           size={SIZES.icon1}
           color={COLORS.white}
           onPress={() => navigation.navigate("AddCategory")}
         />
-        <Text style={{ color: COLORS.white, ...FONTS.h2, marginStart: 55, marginTop: 60 }}>
+        <Text
+          style={{
+            color: COLORS.white,
+            ...FONTS.h2,
+            marginStart: 55,
+            marginTop: 80,
+          }}
+        >
           Post New Item
         </Text>
       </View>
@@ -32,8 +78,7 @@ export default function AddItemScreen({ navigation }) {
             />
           }
           keyboardType="text"
-          // value={username}
-          // onChangeText={(text) => setUsername(text)}
+          onChangeText={handleItemName}
         />
 
         <InputField
@@ -47,9 +92,8 @@ export default function AddItemScreen({ navigation }) {
               style={styles.icon}
             />
           }
-          keyboardType="text"
-          // value={username}
-          // onChangeText={(text) => setUsername(text)}
+          keyboardType="numeric"
+          onChangeText={handleQuantity}
         />
         <InputField
           style={styles.input}
@@ -62,9 +106,8 @@ export default function AddItemScreen({ navigation }) {
               style={styles.icon}
             />
           }
-          keyboardType="text"
-          // value={username}
-          // onChangeText={(text) => setUsername(text)}
+          keyboardType="numeric"
+          onChangeText={handlePrice}
         />
         <InputField
           style={styles.input}
@@ -78,10 +121,9 @@ export default function AddItemScreen({ navigation }) {
             />
           }
           keyboardType="text"
-          // value={username}
-          // onChangeText={(text) => setUsername(text)}
+          onChangeText={handleUnit}
         />
-        <Button label={"Add"} onPress={()=> navigation.navigate('UpdateItem')}/>
+        <Button label={"Add"} onPress={handleSubmit} />
       </View>
     </SafeAreaView>
   );
@@ -89,21 +131,21 @@ export default function AddItemScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,    
+    flex: 1,
   },
   container1: {
     flexDirection: "row",
     backgroundColor: COLORS.primary,
-    height: 130,
+    height: 150,
     padding: 10,
     borderBottomLeftRadius: 60,
     borderBottomRightRadius: 60,
   },
   form: {
     flex: 6,
-    justifyContent: 'space-evenly',
+    justifyContent: "space-evenly",
     paddingHorizontal: SIZES.padding3,
-    paddingVertical: 60,
+    paddingVertical: 20,
   },
   input: {
     paddingVertical: SIZES.padding3,

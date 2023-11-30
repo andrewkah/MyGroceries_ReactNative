@@ -19,6 +19,7 @@ export const SIZES = {
   padding: 8,
   padding2: 16,
   padding3: 25,
+  padding4: 40,
 
   // ICONS
   icon0: 20,

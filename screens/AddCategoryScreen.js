@@ -71,6 +71,7 @@ export default function AddCategoryScreen({ navigation }) {
       image: require("../assets/images/cleaning1.jpg"),
     },
   ];
+
   const renderItem = ({ item }) => {
     return (
       <MotiView
@@ -78,7 +79,7 @@ export default function AddCategoryScreen({ navigation }) {
         from={{ opacity: 0, translateY: 50 }}
         animate={{ opacity: 1, translateY: 0 }}
       >
-        <TouchableOpacity style={{alignItems: "center",}} onPress={() => navigation.navigate("AddItem")}>
+        <TouchableOpacity style={{alignItems: "center",}} onPress={() => navigation.navigate("AddItem", {categoryName: item.title, categoryImage: item.image})}>
           <View style={styles.imageContainer}>
             <Image source={item.image} style={styles.image} />
           </View>
@@ -87,11 +88,12 @@ export default function AddCategoryScreen({ navigation }) {
       </MotiView>
     );
   };
+  
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container1}>
         <Ionicons
-          style={{ marginTop: 25, marginStart: 15 }}
+          style={{ marginTop: 35, marginStart: 15 }}
           name="arrow-back"
           size={SIZES.icon1}
           color={COLORS.white}
@@ -102,7 +104,7 @@ export default function AddCategoryScreen({ navigation }) {
             color: COLORS.white,
             ...FONTS.h2,
             marginStart: 45,
-            marginTop: 60,
+            marginTop: 80,
           }}
         >
           Add New Category
@@ -135,14 +137,15 @@ const styles = StyleSheet.create({
   container1: {
     flexDirection: "row",
     backgroundColor: COLORS.primary,
-    height: 130,
+    height: 150,
     padding: 10,
     borderBottomLeftRadius: 60,
     borderBottomRightRadius: 60,
+    paddingTop: SIZES.padding,
   },
   categoryList: {
     width: Dimensions.get("window").width / 2 - 20,
-    height: Dimensions.get("window").height / 2 - 80,
+    height: Dimensions.get("window").height / 2 - 70,
   },
   imageContainer: {
     margin: SIZES.padding2,

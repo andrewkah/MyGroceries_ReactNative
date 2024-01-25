@@ -5,7 +5,6 @@ import { useCallback, useEffect } from "react";
 import { AuthProvider } from "./context/AuthContext";
 import AppNav from "./navigation/AppNav";
 
-SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [fontsLoaded] = useFonts({

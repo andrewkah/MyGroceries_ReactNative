@@ -1,5 +1,5 @@
 export const COLORS = {
-  background: "#031F2B",
+  background: "#56A690",
   paleBackground: "#D8D8D8",
   primary: "#56A706",
   secondary: "#D6D2D2",
@@ -7,6 +7,7 @@ export const COLORS = {
   white: "#FFFFFF",
   gray: "#666",
   black: "#32343E",
+  red: "#ff0000"
 };
 
 export const SIZES = {

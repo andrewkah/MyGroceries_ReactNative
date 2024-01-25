@@ -3,16 +3,17 @@ import React from 'react'
 import { COLORS, SIZES, FONTS } from '../constants/theme'
 
 export default function InputField({
-    label, icon, inputType, keyBoardType, fieldButtonLabel, fieldButtonFunction, value, onChangeText
+    label, icon,icon2, inputType, keyBoardType, fieldButtonLabel, fieldButtonFunction, value, onChangeText,secureTextEntry
 }) {
   return (
     <View style={styles.container}>
         {icon}
         {inputType == "password" ? (
-            <TextInput style={styles.textInput} placeholder={label} keyboardType={keyBoardType} secureTextEntry={true} value={value} onChangeText={onChangeText} />
+            <TextInput autoCapitalize='none' style={styles.textInput} placeholder={label} keyboardType={keyBoardType} secureTextEntry={secureTextEntry} value={value} onChangeText={onChangeText} />
         ): (
-            <TextInput style={styles.textInput} placeholder={label} keyboardType={keyBoardType} value={value} onChangeText={onChangeText} />
+            <TextInput autoCapitalize='none' style={styles.textInput} placeholder={label} keyboardType={keyBoardType} value={value} onChangeText={onChangeText} />
         )}
+        {icon2}
         <TouchableOpacity onPress={fieldButtonFunction}>
             <Text style={{color: COLORS.primary, ...FONTS.h4, fontWeight: '600'}}>{fieldButtonLabel}</Text>
         </TouchableOpacity>

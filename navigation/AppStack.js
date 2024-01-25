@@ -1,12 +1,12 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "../screens/HomeScreen";
+import HomeScreen from "../screens/app/HomeScreen";
 import { COLORS, FONTS, SIZES } from "../constants/theme";
-import AddCategoryScreen from "../screens/AddCategoryScreen";
-import AddItemScreen from "../screens/AddItemScreen";
-import UpdateItemScreen from "../screens/UpdateItemScreen";
-import ItemListScreen from "../screens/ItemListScreen";
+import AddCategoryScreen from "../screens/app/AddCategoryScreen";
+import AddItemScreen from "../screens/app/AddItemScreen";
+import UpdateItemScreen from "../screens/app/UpdateItemScreen";
+import ItemListScreen from "../screens/app/ItemListScreen";
 
 const Stack = createNativeStackNavigator();
 

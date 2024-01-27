@@ -92,9 +92,7 @@ export default function RegisterScreen({ navigation }) {
           <Button
             label={"Register"}
             onPress={() => {
-              registerUser(username, email, password, () => {
-                navigation.navigate("Home");
-              });
+              registerUser(username, email, password);
             }}
           />
           <View style={styles.register}>

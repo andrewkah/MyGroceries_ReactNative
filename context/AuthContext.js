@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [registrationData, setRegistrationData] = useState(null);
 
-  const registerUser = async (username, email, password, navigateCallback) => {
+  const registerUser = async (username, email, password) => {
     setIsLoading(true);
 
     try {

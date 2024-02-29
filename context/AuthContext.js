@@ -2,6 +2,8 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import BASEURL from '../config'
+import { showAlert } from "../components/Alert";
 
 export const AuthContext = createContext();
 
@@ -16,7 +18,7 @@ export const AuthProvider = ({ children }) => {
 
     try {
       const response = await axios.post(
-        `https://mygroceriesapp-springboot.onrender.com/api/v1/auth/signup`,
+        `${BASEURL}/auth/signup`,
         {
           username,
           email,
@@ -31,7 +33,7 @@ export const AuthProvider = ({ children }) => {
       AsyncStorage.setItem("userInfo", JSON.stringify(result));
       AsyncStorage.setItem("userToken", result.token);
     } catch (error) {
-      console.log(`Sign up error: ${error.message}`);
+      showAlert("danger", "Error", `Sign up error: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
@@ -39,22 +41,23 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     setIsLoading(true);
-    console.log(username, password);
     try {
       const response = await axios.post(
-        `https://mygroceriesapp-springboot.onrender.com/api/v1/auth/signin`,
+        `${BASEURL}/auth/signin`,
         {
           username,
           password,
         }
       );
       let userInfo = response.data;
+      setRegistrationData(userInfo.username);
       setUserInfo(userInfo);
       setUserToken(userInfo.token);
       AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
       AsyncStorage.setItem("userToken", userInfo.token);
+      AsyncStorage.setItem("User name", userInfo.username);
     } catch (error) {
-      console.log(`Login error ${error.message}`);
+      showAlert("danger", "Error", `login error: ${error.message}`);
     } finally {
       setIsLoading(false);
     }

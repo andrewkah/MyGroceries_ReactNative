@@ -1,5 +1,5 @@
 export const COLORS = {
-  background: "#56A690",
+  background: "#67c20e",
   paleBackground: "#D8D8D8",
   primary: "#56A706",
   secondary: "#D6D2D2",
@@ -15,6 +15,7 @@ export const SIZES = {
   base: 8,
   font: 14,
   radius: 10,
+  radius1: 20,
   radius2: 30,
   padding0: 3,
   padding: 8,
@@ -36,7 +37,7 @@ export const SIZES = {
   h4: 18,
   body1: 30,
   body2: 20,
-  body3: 16,
+  body3: 17,
   body4: 14,
 };
 

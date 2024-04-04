@@ -1,57 +1,63 @@
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useState } from "react";
 import { Ionicons } from "react-native-vector-icons";
 import { FONTS, SIZES, COLORS } from "../../constants/theme";
 import InputField from "../../components/InputField";
 import Button from "../../components/Button";
+import BASEURL from "../../config"
+import axios from "axios";
+import { showAlert } from "../../components/Alert";
 
-export default function AddItemScreen({ navigation }) {
-  const [itemName, setItemName] = useState('')
-  const [quantity, setQuantity] = useState(0);
-  const [price, setPrice] = useState(0);
+const AddItemScreen = ({ navigation, route }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [itemName, setItemName] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [price, setPrice] = useState("");
   const [unit, setUnit] = useState("");
+  const [errors, setErrors] = useState({});
 
-  const handleItemName = (text) => {setItemName(text)};
-  const handleQuantity = (text) => {
-    const qtyValue = parseFloat(text);
-    if (isNaN(qtyValue)) {
-      setQuantity("invalid input");
-    } else {
-      setQuantity(qtyValue);
-    }
+  const requiredForm = () => {
+    let errors = {};
+    if (!itemName) errors.itemName = "Item name is required";
+    if (!quantity) errors.quantity = "Quantity is required";
+    if (!price) errors.price = "Price is required";
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
   };
-  const handlePrice = (text) => {
-    const priceValue = parseFloat(text);
-    if (isNaN(priceValue)) {
-      setPrice("Invalid input");
-    } else {
-      setPrice(priceValue);
+
+  const AddItem = async (name, quantity, price, unit, category) => {
+    if (requiredForm()) {
+      setIsLoading(true);
+      try {
+        const response = await axios.post(`${BASEURL}/category/item/add`, {
+          name,
+          quantity,
+          price,
+          unit,
+          category,
+        });
+        const result = response.data;
+        navigation.navigate('ItemList', {categoryId: category})
+      } catch (e) {
+        let errorMessage = e.response?.data || "An error occurred";
+        showAlert("danger", "Error!", errorMessage);
+      } finally {
+        setIsLoading(false);
+      }
     }
-  };
-  const handleUnit = (text) => setUnit(text);
-
-  // const collectFormData = () => {
-  //   return {
-  //     itemName,
-  //     quantity,
-  //     price,
-  //     unit,
-  //   };
-  // };
-
-  const handleSubmit = () => {
-    // const formData = collectFormData();
-
-    navigation.navigate("ItemList", { 
-      itemTitle: itemName,
-      quantity: quantity,
-      price: price,
-      unit: unit,
-     });
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style="auto" />
       <View style={styles.container1}>
         <Ionicons
           style={{ marginTop: 35, marginStart: 15 }}
@@ -83,8 +89,11 @@ export default function AddItemScreen({ navigation }) {
               style={styles.icon}
             />
           }
-          keyboardType="text"
-          onChangeText={handleItemName}
+          value={itemName}
+          keyBoardType="default"
+          onChangeText={setItemName}
+          errorSet={errors.itemName}
+          errorText={errors.itemName}
         />
 
         <InputField
@@ -98,8 +107,11 @@ export default function AddItemScreen({ navigation }) {
               style={styles.icon}
             />
           }
-          keyboardType="numeric"
-          onChangeText={handleQuantity}
+          keyBoardType="numeric"
+          value={quantity}
+          onChangeText={setQuantity}
+          errorSet={errors.quantity}
+          errorText={errors.quantity}
         />
         <InputField
           style={styles.input}
@@ -112,8 +124,11 @@ export default function AddItemScreen({ navigation }) {
               style={styles.icon}
             />
           }
-          keyboardType="numeric"
-          onChangeText={handlePrice}
+          keyBoardType="numeric"
+          value={price}
+          onChangeText={setPrice}
+          errorSet={errors.price}
+          errorText={errors.price}
         />
         <InputField
           style={styles.input}
@@ -126,14 +141,24 @@ export default function AddItemScreen({ navigation }) {
               style={styles.icon}
             />
           }
-          keyboardType="text"
-          onChangeText={handleUnit}
+          keyBoardType="default"
+          value={unit}
+          onChangeText={setUnit}
+          errorSet={errors.unit}
+          errorText={errors.unit}
         />
-        <Button label={"Add"} onPress={handleSubmit} />
+        <Button
+          label={"Add"}
+          onPress={() => {
+           AddItem(itemName, quantity, price, unit, route.params?.categoryId);
+          }
+          }
+        />
+        {isLoading && <ActivityIndicator size="large" color={COLORS.primary} />}
       </View>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -160,3 +185,5 @@ const styles = StyleSheet.create({
     marginRight: SIZES.padding2,
   },
 });
+
+export default AddItemScreen;

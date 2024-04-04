@@ -82,8 +82,9 @@ const LoginScreen = ({ navigation }) => {
                 style={styles.icon}
               />
             }
-            keyboardType="text"
+            keyBoardType='default'
             value={username}
+            autoComplete={'username'}
             onChangeText={(text) => setUsername(text)}
             errorSet={errors.username}
             errorText={errors.username}
@@ -94,7 +95,7 @@ const LoginScreen = ({ navigation }) => {
             secureTextEntry={!showPassword}
             icon={
               <Ionicons
-                name="ios-lock-closed"
+                name="lock-closed"
                 size={SIZES.icon0}
                 color={COLORS.gray}
                 style={styles.icon}
@@ -110,6 +111,7 @@ const LoginScreen = ({ navigation }) => {
               />
             }
             inputType="password"
+            autoComplete={'password'}
             fieldButtonLabel={"Forgot?"}
             fieldButtonFunction={() => navigation.navigate("ForgotPassword")}
             value={password}

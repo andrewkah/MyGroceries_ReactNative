@@ -5,44 +5,72 @@ import {
   View,
   FlatList,
   TouchableOpacity,
-  Alert,
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "react-native-vector-icons";
-import React, { useEffect, useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { MotiView } from "moti";
 import { COLORS, FONTS, SIZES } from "../../constants/theme";
 import Button from "../../components/Button";
+import axios from "axios";
+import BASEURL from "../../config";
+import { showAlert } from "../../components/Alert";
 
-export default function ItemListScreen({ route, navigation }) {
+const ItemListScreen = ({ route, navigation }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [items, setItems] = useState([]);
 
-  if (route.params) {
-    const newItemTitle = items.some(
-      (item) => item.title === route.params?.itemTitle
-    );
-    {
-      !newItemTitle
-        ? setItems([
-            ...items,
-            {
-              id: items.length,
-              title: newItemTitle,
-              quantity: route.params?.quantity,
-              price: route.params?.price,
-              unit: route.params?.unit,
-            },
-          ])
-        : Alert.alert(
-            "Item exists",
-            `${newItemTitle} already exists in the list.`
-          );
+  const GetItems = async (idNo) => {
+    setIsLoading(true);
+    try {
+      const resItems = await axios.get(`${BASEURL}/category/item/${idNo}`);
+      const result = resItems.data;
+      setItems(result);
+    } catch (error) {
+      showAlert("danger", error.message);
+    } finally {
+      setIsLoading(false);
     }
-  }
+  };
 
-  const deleteItem = (id) => {
-    setItems((prevItems) => {
-      return prevItems.filter((item) => item.id != id);
-    });
+  useLayoutEffect(() => {
+    // if (route.params && route.params.categoryId) {
+      GetItems(route.params.categoryId);
+    // }
+  }, [route.params]);
+
+  // if (route.params) {
+  //   const newItemTitle = items.some(
+  //     (item) => item.title === route.params?.itemTitle
+  //   );
+  //   {
+  //     !newItemTitle
+  //       ? setItems([
+  //           ...items,
+  //           {
+  //             id: items.length,
+  //             title: newItemTitle,
+  //             quantity: route.params?.quantity,
+  //             price: route.params?.price,
+  //             unit: route.params?.unit,
+  //           },
+  //         ])
+  //       : Alert.alert(
+  //           "Item exists",
+  //           `${newItemTitle} already exists in the list.`
+  //         );
+  //   }
+  // }
+
+  const DeleteItem = async (idNo) => {
+    try {
+      const response = await axios.delete(`${BASEURL}/category/item/${idNo}`);
+      let result = response.data;
+      showAlert("success", result);
+    } catch (error) {
+      let errorMessage = error.response?.data || "An error occurred";
+      showAlert("danger", errorMessage);
+    }
   };
 
   const renderItem = ({ item }) => {
@@ -52,14 +80,8 @@ export default function ItemListScreen({ route, navigation }) {
         from={{ opacity: 0, translateY: 50 }}
         animate={{ opacity: 1, translateY: 0 }}
       >
-        <TouchableOpacity
-          style={{
-            alignItems: "center",
-            backgroundColor: COLORS.primary,
-            flexDirection: "row",
-          }}
-        >
-          <Text style={styles.nameText}>{item.itemName}</Text>
+        <TouchableOpacity style={styles.items}>
+          <Text style={styles.nameText}>{item.name}</Text>
           <Text style={styles.nameText}>{item.quantity}</Text>
           <Text style={styles.nameText}>{item.price}</Text>
           <Text style={styles.nameText}>{item.unit}</Text>
@@ -69,14 +91,19 @@ export default function ItemListScreen({ route, navigation }) {
           name="pencil"
           size={SIZES.icon1}
           color={COLORS.gray}
-          onPress={() => navigation.navigate("UpdateItem", { formData: item })}
+          onPress={() =>
+            navigation.navigate("UpdateItem", {
+              itemId: item.itemId,
+              formData: item,
+            })
+          }
         />
         <Ionicons
           style={{ marginTop: 35, marginStart: 15 }}
-          name="remove-circle-outline"
+          name="trash"
           size={SIZES.icon1}
           color={COLORS.red}
-          onPress={(item) => deleteItem(item.id)}
+          onPress={() => DeleteItem(item.itemId)}
         />
       </MotiView>
     );
@@ -111,16 +138,27 @@ export default function ItemListScreen({ route, navigation }) {
       >
         <FlatList
           data={items}
-          ListEmptyComponent={() => <Text>No items found.</Text>}
+          refreshing={true}
+          ListEmptyComponent={() => (
+            <View style={{ alignItems: "center", flex: 1 }}>
+              {isLoading ? (
+                <ActivityIndicator size="large" color={COLORS.primary} />
+              ) : (
+                <Text>No items found</Text>
+              )}
+            </View>
+          )}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.itemId}
           showsVerticalScrollIndicator={false}
         />
       </View>
       <Button label={"Home"} onPress={() => navigation.navigate("Home")} />
     </SafeAreaView>
   );
-}
+};
+
+export default ItemListScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -135,20 +173,26 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 60,
   },
   itemList: {
+    flex: 1,
     flexDirection: "row",
+    justifyContent: "center",
+    marginVertical: SIZES.padding,
   },
-  imageContainer: {
-    margin: SIZES.padding2,
+  items: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    padding: SIZES.padding,
     borderRadius: SIZES.radius,
-    overflow: "hidden",
-  },
-  image: {
-    width: "100%",
-    height: undefined,
-    aspectRatio: 1,
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    backgroundColor: COLORS.white,
+    elevation: 5,
   },
   nameText: {
     color: COLORS.black,
-    ...FONTS.body3,
+    ...FONTS.body2,
+    textTransform: "capitalize",
   },
 });

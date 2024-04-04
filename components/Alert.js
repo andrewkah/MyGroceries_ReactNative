@@ -1,7 +1,7 @@
 import { showMessage } from "react-native-flash-message";
 import { COLORS, FONTS, SIZES } from "../constants/theme";
 
-export const showAlert = (type, message, description) => {
+export const showAlert = (type, message, description, onClose) => {
   showMessage({
     position: 'bottom',
     icon: "auto",
@@ -13,8 +13,9 @@ export const showAlert = (type, message, description) => {
     message: message,
     description: description,
     type: type,
+    onClose: onClose,
     // backgroundColor: type == "success" && COLORS.primary,
-    duration: 2200,
+    duration: 2500,
     titleStyle: {
       ...FONTS.body3,
     },

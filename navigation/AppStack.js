@@ -7,6 +7,7 @@ import AddCategoryScreen from "../screens/app/AddCategoryScreen";
 import AddItemScreen from "../screens/app/AddItemScreen";
 import UpdateItemScreen from "../screens/app/UpdateItemScreen";
 import ItemListScreen from "../screens/app/ItemListScreen";
+import PushNotifications from "../components/pushNotifications";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,10 @@ export default function AppStack() {
       <Stack.Screen
         name="Home"
         component={HomeScreen}
+      />
+      <Stack.Screen
+        name="Notify"
+        component={PushNotifications}
       />
       <Stack.Screen
         name="AddCategory"

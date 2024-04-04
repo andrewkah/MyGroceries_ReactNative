@@ -81,7 +81,7 @@ const ResetPasswordScreen = ({ navigation }) => {
               }
               value={token}
               onChangeText={(text) => setToken(text)}
-              keyboardType="text"
+              keyBoardType="default"
               errorSet={errors.token}
               errorText={errors.token}
             />
@@ -90,7 +90,7 @@ const ResetPasswordScreen = ({ navigation }) => {
               secureTextEntry={!showPassword}
               icon={
                 <Ionicons
-                  name="ios-lock-closed"
+                  name="lock-closed"
                   size={SIZES.icon0}
                   color={COLORS.gray}
                   style={styles.icon}
@@ -108,6 +108,7 @@ const ResetPasswordScreen = ({ navigation }) => {
                 />
               }
               inputType="password"
+              autoComplete={'password'}
               errorSet={errors.password}
               errorText={errors.password}
             />

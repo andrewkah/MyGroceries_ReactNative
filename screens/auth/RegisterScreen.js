@@ -57,7 +57,7 @@ const RegisterScreen = ({ navigation }) => {
               }
               value={username}
               onChangeText={(text) => setUsername(text)}
-              keyboardType="text"
+              keyBoardType={'default'}
               errorSet={errors.username}
               errorText={errors.username}
             />
@@ -72,8 +72,9 @@ const RegisterScreen = ({ navigation }) => {
                 />
               }
               value={email}
+              autoComplete={'email'}
               onChangeText={(text) => setEmail(text)}
-              keyboardType="email-address"
+              keyBoardType="email-address"
               errorSet={errors.email}
               errorText={errors.email}
             />
@@ -83,13 +84,14 @@ const RegisterScreen = ({ navigation }) => {
               secureTextEntry={!showPassword}
               icon={
                 <Ionicons
-                  name="ios-lock-closed"
+                  name="lock-closed"
                   size={SIZES.icon0}
                   color={COLORS.gray}
                   style={styles.icon}
                 />
               }
               value={password}
+              autoComplete={'password'}
               onChangeText={(text) => setPassword(text)}
               icon2={
                 <Ionicons
@@ -109,7 +111,7 @@ const RegisterScreen = ({ navigation }) => {
               secureTextEntry={!showPassword}
               icon={
                 <Ionicons
-                  name="ios-lock-closed"
+                  name="lock-closed"
                   size={SIZES.icon0}
                   color={COLORS.gray}
                   style={styles.icon}
@@ -127,6 +129,7 @@ const RegisterScreen = ({ navigation }) => {
                 />
               }
               inputType="password"
+              autoComplete={'password'}
               errorSet={errors.password}
               errorText={errors.password}
             />

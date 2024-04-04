@@ -7,14 +7,19 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  ActivityIndicator,
+  StatusBar,
 } from "react-native";
 import { Ionicons } from "react-native-vector-icons";
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import { MotiView } from "moti";
 import { COLORS, FONTS, SIZES } from "../../constants/theme";
-import { useRoute } from "@react-navigation/native"
+import BASEURL from "../../config"
+import axios from "axios";
+import { showAlert } from "../../components/Alert";
 
-export default function AddCategoryScreen({ navigation }) {
+const AddCategoryScreen = ({ navigation }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const categoryList = [
     {
       id: 0,
@@ -73,6 +78,26 @@ export default function AddCategoryScreen({ navigation }) {
     },
   ];
 
+  const AddCategory = async (name) => {
+    try {
+      setIsLoading(true);
+      const category = await axios.post(
+        `${BASEURL}/category/add`,
+        {
+          name
+        }
+      );
+      let result = category.data;
+      let idNo = result.categoryId;
+      navigation.navigate('Home', {categoryTitle: name, categoryId: idNo});
+    } catch (e) {
+      let errorMessage = e.response?.data || 'An error occurred';
+      (errorMessage) && showAlert("danger", errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   const renderItem = ({ item }) => {
     return (
       <MotiView
@@ -83,7 +108,7 @@ export default function AddCategoryScreen({ navigation }) {
         <TouchableOpacity
           style={{ alignItems: "center" }}
           onPress={() => {
-            navigation.navigate('Home', {categoryTitle: item.title});
+            AddCategory(item.title);
           }
             
           }
@@ -99,6 +124,7 @@ export default function AddCategoryScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style="auto" />
       <View style={styles.container1}>
         <Ionicons
           style={{ marginTop: 35, marginStart: 15 }}
@@ -124,6 +150,7 @@ export default function AddCategoryScreen({ navigation }) {
           paddingVertical: SIZES.padding2,
         }}
       >
+        {isLoading && <ActivityIndicator size="large" color={COLORS.primary} />}
         <FlatList
           data={categoryList}
           ListEmptyComponent={() => <Text>No items found.</Text>}
@@ -137,6 +164,8 @@ export default function AddCategoryScreen({ navigation }) {
     </SafeAreaView>
   );
 }
+
+export default AddCategoryScreen
 
 const styles = StyleSheet.create({
   container: {

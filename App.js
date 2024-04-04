@@ -1,10 +1,17 @@
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AuthProvider } from "./context/AuthContext";
 import AppNav from "./navigation/AppNav";
 import FlashMessage from "react-native-flash-message";
+import { showAlert } from "./components/Alert";
+import axios from "axios";
+import BASEURL from "./config";
+import BackgroundFetch from "react-native-background-fetch";
+import NetInfo from "@react-native-community/netinfo";
+import PushNotifications from "./components/pushNotifications";
+import { schedulePushNotification } from "./components/pushNotifications";
 
 
 export default function App() {
@@ -23,6 +30,21 @@ export default function App() {
       }, 3000);
     }
   }, [fontsLoaded]);
+
+  NetInfo.addEventListener((networkState) => {
+    if (networkState.isConnected) {
+      showAlert("success", "Internet Connected");
+    } else {
+      showAlert(
+        "danger",
+        "No internet Connection!",
+        "Please turn on your wifi connection."
+      );
+    }
+  });
+
+  
+
   useEffect(() => {
     SplashScreen.preventAutoHideAsync();
   }, []);
@@ -35,7 +57,7 @@ export default function App() {
     <SafeAreaProvider onLayout={onLayoutRootView}>
       <AuthProvider>
         <AppNav />
-        <FlashMessage/>
+        <FlashMessage />
       </AuthProvider>
     </SafeAreaProvider>
   );

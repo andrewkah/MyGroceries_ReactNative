@@ -86,8 +86,9 @@ const ForgotPasswordScreen = ({ navigation }) => {
                 />
               }
               value={username}
+              autoComplete={'username'}
               onChangeText={(text) => setUsername(text)}
-              keyboardType="text"
+              keyBoardType="default"
               errorSet={errors.username}
               errorText={errors.username}
             />
@@ -102,8 +103,9 @@ const ForgotPasswordScreen = ({ navigation }) => {
                 />
               }
               value={emailAddress}
+              autoComplete={'email'}
               onChangeText={(text) => setEmailAddress(text)}
-              keyboardType="email-address"
+              keyBoardType="email-address"
               errorSet={errors.emailAddress}
               errorText={errors.emailAddress}
             />

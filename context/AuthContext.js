@@ -53,9 +53,9 @@ export const AuthProvider = ({ children }) => {
       setRegistrationData(userInfo.username);
       setUserInfo(userInfo);
       setUserToken(userInfo.token);
-      AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-      AsyncStorage.setItem("userToken", userInfo.token);
-      AsyncStorage.setItem("User name", userInfo.username);
+      await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+      await AsyncStorage.setItem("userToken", userInfo.token);
+      await AsyncStorage.setItem("User name", userInfo.username);
     } catch (error) {
       showAlert("danger", "Error", `login error: ${error.message}`);
     } finally {

@@ -13,6 +13,7 @@ export default function InputField({
   icon,
   icon2,
   inputType,
+  autoComplete,
   keyBoardType,
   fieldButtonLabel,
   fieldButtonFunction,
@@ -74,7 +75,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottomColor: COLORS.primary,
     borderBottomWidth: 1,
-
   },
   textInput: {
     flex: 1,

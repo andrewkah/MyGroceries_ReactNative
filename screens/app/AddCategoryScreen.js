@@ -11,10 +11,10 @@ import {
   StatusBar,
 } from "react-native";
 import { Ionicons } from "react-native-vector-icons";
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { MotiView } from "moti";
 import { COLORS, FONTS, SIZES } from "../../constants/theme";
-import BASEURL from "../../config"
+import BASEURL from "../../config";
 import axios from "axios";
 import { showAlert } from "../../components/Alert";
 
@@ -81,22 +81,19 @@ const AddCategoryScreen = ({ navigation }) => {
   const AddCategory = async (name) => {
     try {
       setIsLoading(true);
-      const category = await axios.post(
-        `${BASEURL}/category/add`,
-        {
-          name
-        }
-      );
+      const category = await axios.post(`${BASEURL}/category/add`, {
+        name,
+      });
       let result = category.data;
       let idNo = result.categoryId;
-      navigation.navigate('Home', {categoryTitle: name, categoryId: idNo});
+      navigation.navigate("Home", { categoryTitle: name, categoryId: idNo });
     } catch (e) {
-      let errorMessage = e.response?.data || 'An error occurred';
-      (errorMessage) && showAlert("danger", errorMessage);
+      let errorMessage = e.response?.data || "Could not submit Category";
+      errorMessage && showAlert("danger", errorMessage, "Please try again");
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   const renderItem = ({ item }) => {
     return (
@@ -109,9 +106,7 @@ const AddCategoryScreen = ({ navigation }) => {
           style={{ alignItems: "center" }}
           onPress={() => {
             AddCategory(item.title);
-          }
-            
-          }
+          }}
         >
           <View style={styles.imageContainer}>
             <Image source={item.image} style={styles.image} />
@@ -152,6 +147,7 @@ const AddCategoryScreen = ({ navigation }) => {
       >
         {isLoading && <ActivityIndicator size="large" color={COLORS.primary} />}
         <FlatList
+          style={{ backgroundColor: COLORS.palest, borderRadius: SIZES.radius }}
           data={categoryList}
           ListEmptyComponent={() => <Text>No items found.</Text>}
           renderItem={renderItem}
@@ -163,13 +159,14 @@ const AddCategoryScreen = ({ navigation }) => {
       </View>
     </SafeAreaView>
   );
-}
+};
 
-export default AddCategoryScreen
+export default AddCategoryScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff",
   },
   container1: {
     flexDirection: "row",
@@ -178,7 +175,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomLeftRadius: 60,
     borderBottomRightRadius: 60,
-    paddingTop: SIZES.padding,
+    paddingTop: SIZES.padding2,
   },
   categoryList: {
     width: Dimensions.get("window").width / 2 - 20,

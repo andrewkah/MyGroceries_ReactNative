@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useLayoutEffect } from "react";
 import Button from "../../components/Button";
 import { Ionicons } from "react-native-vector-icons";
 import { COLORS, FONTS, SIZES } from "../../constants/theme";
@@ -27,30 +27,26 @@ const HomeScreen = ({ navigation, route }) => {
   const [categoryTitles, setCategoryTitles] = useState([]);
   const { registrationData } = useContext(AuthContext);
   const data = [
-       require("../../assets/images/vegetables1.jpg"),
-       require("../../assets/images/I4iuDyn9.jpg"),
-       require("../../assets/images/dairy2.jpg"),
-       require("../../assets/images/baked1.jpg"),
-       require("../../assets/images/meat1.jpg"),
-       require("../../assets/images/canned1.jpg"),
-       require("../../assets/images/snacks1.jpg"),
-       require("../../assets/images/rice1.jpg"),
-       require("../../assets/images/beverage1.jpg"),
-       require("../../assets/images/spices1.jpg"),
-       require("../../assets/images/cleaning1.jpg"),
+    require("../../assets/images/vegetables1.jpg"),
+    require("../../assets/images/I4iuDyn9.jpg"),
+    require("../../assets/images/dairy2.jpg"),
+    require("../../assets/images/baked1.jpg"),
+    require("../../assets/images/meat1.jpg"),
+    require("../../assets/images/canned1.jpg"),
+    require("../../assets/images/snacks1.jpg"),
+    require("../../assets/images/rice1.jpg"),
+    require("../../assets/images/beverage1.jpg"),
+    require("../../assets/images/spices1.jpg"),
+    require("../../assets/images/cleaning1.jpg"),
   ];
 
   const renderItem = ({ item }) => {
     return (
       <MotiView
-        // style={styles.categoryList}
         from={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
       >
-        <TouchableOpacity
-          style={{ alignItems: "center" }}
-          
-        >
+        <TouchableOpacity style={{ alignItems: "center" }}>
           <View style={styles.imageContainer}>
             <Image source={item} style={styles.image} />
           </View>
@@ -67,7 +63,7 @@ const HomeScreen = ({ navigation, route }) => {
       setCategoryTitles(result);
     } catch (error) {
       let errorMessage = error.response?.data || "Error fetching Categories";
-      showAlert("danger", errorMessage);
+      showAlert("danger", errorMessage, "Please try again");
     } finally {
       setIsLoading(false);
     }
@@ -81,31 +77,50 @@ const HomeScreen = ({ navigation, route }) => {
       showAlert("success", result);
     } catch (error) {
       let errorMessage = error.response?.data || "Error deleting Categories";
-      showAlert("danger", errorMessage);
+      showAlert("danger", errorMessage, "Please try again");
     } finally {
       setIsDeleteLoading(false);
     }
   };
 
-  React.useEffect(() => {
+  useLayoutEffect(() => {
     fetchCategories();
-  }, [route.params]);
-
+  }, [route.params, categoryTitles]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style="auto" animated />
-      <View style={styles.header}>
-        <Text style={{ ...FONTS.h2 }}>My Groceries</Text>
+      <StatusBar style="auto" />
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          paddingTop: SIZES.padding4,
+          marginVertical: SIZES.padding,
+        }}
+      >
+        <View style={styles.header}>
+          <Text style={{ ...FONTS.h2 }}>My Groceries</Text>
+        </View>
+        <Pressable style={{ marginBottom: SIZES.padding0, alignItems: 'center' }} onPress={() => {
+              logout();
+            }}>
+          <Ionicons
+            name="log-out-outline"
+            size={SIZES.icon1}
+            color={COLORS.red}
+          />
+          <Text style={{...FONTS.body4, color: COLORS.red}}>Log Out</Text>
+        </Pressable>
       </View>
-      <View style={{ flex: 0.5 }}>
+      <View style={{ marginVertical: SIZES.padding }}>
         <Text style={{ ...FONTS.h3 }}>Welcome {registrationData}👋</Text>
       </View>
-      <View style={{ flex: 2.5 }}>
+      <View style={{ flex: 1.5 }}>
         <View style={styles.listHeader}>
           <Text style={{ ...FONTS.body3 }}>Top Choices</Text>
         </View>
         <FlatList
+        style={{ backgroundColor: COLORS.palest, borderRadius: SIZES.radius, paddingHorizontal: SIZES.padding0 }}
           data={data}
           horizontal={true}
           refreshing={true}
@@ -120,11 +135,11 @@ const HomeScreen = ({ navigation, route }) => {
           )}
           renderItem={renderItem}
           keyExtractor={(item) => item}
-          showsHorizontalScrollIndicator={false}
+          showsHorizontalScrollIndicator={true}
         />
       </View>
       <View style={{ flex: 3 }}>
-        <View style={styles.listHeader}>
+        <View style={[styles.listHeader, { marginBottom: SIZES.padding0 }]}>
           <Text style={{ ...FONTS.body2 }}>Category</Text>
           <Ionicons
             name="add-circle"
@@ -134,10 +149,11 @@ const HomeScreen = ({ navigation, route }) => {
           />
         </View>
         <FlatList
+          style={{ backgroundColor: COLORS.palest, borderRadius: SIZES.radius, paddingHorizontal: SIZES.padding0 }}
           data={categoryTitles}
           refreshing={true}
           ListEmptyComponent={() => (
-            <View style={{ alignItems: "center", flex: 1 }}>
+            <View style={{ alignItems: "center", flex: 1, marginTop: SIZES.padding }}>
               {isLoading ? (
                 <ActivityIndicator size="large" color={COLORS.primary} />
               ) : (
@@ -152,6 +168,7 @@ const HomeScreen = ({ navigation, route }) => {
                 onPress={() =>
                   navigation.navigate("ItemList", {
                     categoryId: item.categoryId,
+                    category: item.name
                   })
                 }
               >
@@ -177,29 +194,14 @@ const HomeScreen = ({ navigation, route }) => {
               </Pressable>
             </View>
           )}
-          showsVerticalScrollIndicator={false}
+          showsVerticalScrollIndicator={true}
           keyExtractor={(item) => item.categoryId}
         />
       </View>
 
       {isDeleteLoading && (
-                <ActivityIndicator size="large" color={COLORS.primary} />
-              )}
-      <Text>HomeScreen</Text>
-      <View style={styles.item}>
-      <Button
-        label={"Notify"}
-        onPress={() => {
-          navigation.navigate('Notify')
-        }}
-      />
-      </View>
-      <Button
-        label={"Sign Out"}
-        onPress={() => {
-          logout();
-        }}
-      />
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      )}
     </SafeAreaView>
   );
 };
@@ -209,23 +211,23 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff",
     justifyContent: "center",
     paddingHorizontal: SIZES.padding3,
     paddingBottom: 65,
   },
   header: {
-    flex: 0.6,
+    flex: 2,
     alignItems: "center",
-    paddingTop: SIZES.padding3,
-    marginVertical: SIZES.padding,
   },
   imageContainer: {
     marginHorizontal: SIZES.padding2,
+    marginBottom: SIZES.padding0,
     borderRadius: SIZES.radius,
     overflow: "hidden",
   },
-   image: {
-    height: '100%',
+  image: {
+    height: "100%",
     aspectRatio: 1,
   },
 

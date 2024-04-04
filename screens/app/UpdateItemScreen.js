@@ -77,7 +77,7 @@ const UpdateItemScreen = ({ navigation, route }) => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: COLORS.white}}>
       <View style={styles.container}>
         <View style={styles.container2}>
           <Text style={styles.header}>{item.name}</Text>

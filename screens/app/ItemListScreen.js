@@ -34,33 +34,8 @@ const ItemListScreen = ({ route, navigation }) => {
   };
 
   useLayoutEffect(() => {
-    // if (route.params && route.params.categoryId) {
       GetItems(route.params.categoryId);
-    // }
-  }, [route.params]);
-
-  // if (route.params) {
-  //   const newItemTitle = items.some(
-  //     (item) => item.title === route.params?.itemTitle
-  //   );
-  //   {
-  //     !newItemTitle
-  //       ? setItems([
-  //           ...items,
-  //           {
-  //             id: items.length,
-  //             title: newItemTitle,
-  //             quantity: route.params?.quantity,
-  //             price: route.params?.price,
-  //             unit: route.params?.unit,
-  //           },
-  //         ])
-  //       : Alert.alert(
-  //           "Item exists",
-  //           `${newItemTitle} already exists in the list.`
-  //         );
-  //   }
-  // }
+  }, [route.params, items]);
 
   const DeleteItem = async (idNo) => {
     try {
@@ -117,18 +92,18 @@ const ItemListScreen = ({ route, navigation }) => {
           name="arrow-back"
           size={SIZES.icon1}
           color={COLORS.white}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate('Home')}
         />
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginLeft: -40 }}>
         <Text
           style={{
             color: COLORS.white,
             ...FONTS.h2,
-            marginStart: 45,
-            marginTop: 80,
           }}
         >
-          Category Items
+          {route.params.category}
         </Text>
+        </View>
       </View>
       <View
         style={{
@@ -137,6 +112,7 @@ const ItemListScreen = ({ route, navigation }) => {
         }}
       >
         <FlatList
+        style={{ backgroundColor: COLORS.palest, borderRadius: SIZES.radius, paddingHorizontal: SIZES.padding0 }}
           data={items}
           refreshing={true}
           ListEmptyComponent={() => (
@@ -153,7 +129,6 @@ const ItemListScreen = ({ route, navigation }) => {
           showsVerticalScrollIndicator={false}
         />
       </View>
-      <Button label={"Home"} onPress={() => navigation.navigate("Home")} />
     </SafeAreaView>
   );
 };
@@ -163,6 +138,7 @@ export default ItemListScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.white,
   },
   container1: {
     flexDirection: "row",

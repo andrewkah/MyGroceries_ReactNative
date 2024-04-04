@@ -6,13 +6,7 @@ import { AuthProvider } from "./context/AuthContext";
 import AppNav from "./navigation/AppNav";
 import FlashMessage from "react-native-flash-message";
 import { showAlert } from "./components/Alert";
-import axios from "axios";
-import BASEURL from "./config";
-import BackgroundFetch from "react-native-background-fetch";
 import NetInfo from "@react-native-community/netinfo";
-import PushNotifications from "./components/pushNotifications";
-import { schedulePushNotification } from "./components/pushNotifications";
-
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -42,8 +36,6 @@ export default function App() {
       );
     }
   });
-
-  
 
   useEffect(() => {
     SplashScreen.preventAutoHideAsync();

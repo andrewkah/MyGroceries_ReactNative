@@ -163,6 +163,7 @@ const AddItemScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.white,
   },
   container1: {
     flexDirection: "row",
@@ -171,6 +172,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomLeftRadius: 60,
     borderBottomRightRadius: 60,
+    paddingTop: SIZES.padding2,
   },
   form: {
     flex: 6,

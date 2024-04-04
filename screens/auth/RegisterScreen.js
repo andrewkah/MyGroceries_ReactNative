@@ -157,7 +157,7 @@ export default RegisterScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.white,
     justifyContent: "center",
     paddingHorizontal: SIZES.padding3,
     paddingBottom: SIZES.padding3,

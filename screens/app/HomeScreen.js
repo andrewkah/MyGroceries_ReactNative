@@ -94,7 +94,7 @@ const HomeScreen = ({ navigation, route }) => {
         style={{
           flexDirection: "row",
           alignItems: "center",
-          paddingTop: SIZES.padding4,
+          paddingTop: SIZES.padding3,
           marginVertical: SIZES.padding,
         }}
       >

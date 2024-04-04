@@ -15,7 +15,7 @@ export const showAlert = (type, message, description, onClose) => {
     type: type,
     onClose: onClose,
     // backgroundColor: type == "success" && COLORS.primary,
-    duration: 2500,
+    duration: 3000,
     titleStyle: {
       ...FONTS.body3,
     },

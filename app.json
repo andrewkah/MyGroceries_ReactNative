@@ -25,7 +25,8 @@
           "com.transistorsoft.fetch",
           "com.transistorsoft.customtask"
         ]
-      }
+      },
+      "bundleIdentifier": "com.andrewkah.groceriesapp"
     },
     "android": {
       "package": "com.andrewkah.groceriesapp",

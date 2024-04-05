@@ -33,7 +33,8 @@ export const AuthProvider = ({ children }) => {
       AsyncStorage.setItem("userInfo", JSON.stringify(result));
       AsyncStorage.setItem("userToken", result.token);
     } catch (error) {
-      showAlert("danger", "Error", `Sign up error: ${error.message}`);
+      let errorMessage = error.response?.data || "Error signing up";
+      showAlert("danger", errorMessage, "Please check your connection and try again.");
     } finally {
       setIsLoading(false);
     }
@@ -57,7 +58,8 @@ export const AuthProvider = ({ children }) => {
       await AsyncStorage.setItem("userToken", userInfo.token);
       await AsyncStorage.setItem("User name", userInfo.username);
     } catch (error) {
-      showAlert("danger", "Error", `login error: ${error.message}`);
+      let errorMessage = error.response?.data || "Error logging in";
+      showAlert("danger", errorMessage, "Sign up if you are not logged in");
     } finally {
       setIsLoading(false);
     }

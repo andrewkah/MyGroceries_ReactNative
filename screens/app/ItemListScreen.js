@@ -6,14 +6,13 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
+  BackHandler,
 } from "react-native";
 import { Ionicons } from "react-native-vector-icons";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState, useEffect } from "react";
 import { MotiView } from "moti";
 import { COLORS, FONTS, SIZES } from "../../constants/theme";
-import Button from "../../components/Button";
-import axios from "axios";
-import BASEURL from "../../config";
+import BASEURL, { instance } from "../../config";
 import { showAlert } from "../../components/Alert";
 
 const ItemListScreen = ({ route, navigation }) => {
@@ -23,7 +22,7 @@ const ItemListScreen = ({ route, navigation }) => {
   const GetItems = async (idNo) => {
     setIsLoading(true);
     try {
-      const resItems = await axios.get(`${BASEURL}/category/item/${idNo}`);
+      const resItems = await instance.get(`${BASEURL}/category/item/${idNo}`);
       const result = resItems.data;
       setItems(result);
     } catch (error) {
@@ -33,13 +32,28 @@ const ItemListScreen = ({ route, navigation }) => {
     }
   };
 
+  
+  useEffect(() => {
+    const backAction = () => {
+      navigation.navigate('Home'); 
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove(); 
+  }, []);
+
   useLayoutEffect(() => {
       GetItems(route.params.categoryId);
   }, [route.params, items]);
 
   const DeleteItem = async (idNo) => {
     try {
-      const response = await axios.delete(`${BASEURL}/category/item/${idNo}`);
+      const response = await instance.delete(`${BASEURL}/category/item/${idNo}`);
       let result = response.data;
       showAlert("success", result);
     } catch (error) {
@@ -101,7 +115,7 @@ const ItemListScreen = ({ route, navigation }) => {
             ...FONTS.h2,
           }}
         >
-          {route.params.category}
+          {route.params.category ? route.params.category : "Items"}
         </Text>
         </View>
       </View>

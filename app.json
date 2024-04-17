@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "GroceriesApp",
+    "name": "My Groceries",
     "slug": "GroceriesApp",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -30,7 +30,6 @@
     },
     "android": {
       "package": "com.andrewkah.groceriesapp",
-      "googleServiceFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -39,9 +38,6 @@
     "web": {
       "favicon": "./assets/images/favicon.png"
     },
-    "plugins": [
-      "react-native-background-fetch"
-    ],
     "extra": {
       "eas": {
         "projectId": "8fafd47b-32f1-4eba-83aa-b2a5b141fda7"

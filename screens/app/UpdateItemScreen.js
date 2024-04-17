@@ -6,14 +6,14 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  BackHandler,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Ionicons } from "react-native-vector-icons";
 import { COLORS, FONTS, SIZES } from "../../constants/theme";
 import InputField from "../../components/InputField";
 import Button from "../../components/Button";
-import axios from "axios";
-import BASEURL from "../../config";
+import BASEURL, { instance } from "../../config";
 import { showAlert } from "../../components/Alert";
 
 const UpdateItemScreen = ({ navigation, route }) => {
@@ -38,7 +38,7 @@ const UpdateItemScreen = ({ navigation, route }) => {
       quantity -= counter;
       setIsLoading(true);
       try {
-        const response = await axios.put(`${BASEURL}/category/item/${idNo}`, {
+        const response = await instance.put(`${BASEURL}/category/item/${idNo}`, {
           name,
           quantity,
           price,
@@ -75,6 +75,19 @@ const UpdateItemScreen = ({ navigation, route }) => {
       setQuantity(newQuantity);
     }
   };
+  useEffect(() => {
+    const backAction = () => {
+      navigation.goBack(); 
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove(); 
+  }, []);
 
   return (
     <SafeAreaView style={{backgroundColor: COLORS.white}}>

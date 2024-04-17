@@ -14,8 +14,7 @@ import { Ionicons } from "react-native-vector-icons";
 import React, { useState } from "react";
 import { MotiView } from "moti";
 import { COLORS, FONTS, SIZES } from "../../constants/theme";
-import BASEURL from "../../config";
-import axios from "axios";
+import BASEURL, { getUsername, instance } from "../../config";
 import { showAlert } from "../../components/Alert";
 
 const AddCategoryScreen = ({ navigation }) => {
@@ -79,10 +78,12 @@ const AddCategoryScreen = ({ navigation }) => {
   ];
 
   const AddCategory = async (name) => {
+    const username = await getUsername();
     try {
       setIsLoading(true);
-      const category = await axios.post(`${BASEURL}/category/add`, {
+      const category = await instance.post(`${BASEURL}/category/add`, {
         name,
+        username,
       });
       let result = category.data;
       let idNo = result.categoryId;
@@ -119,7 +120,7 @@ const AddCategoryScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style="auto" />
+      <StatusBar hidden={false} translucent={true} />
       <View style={styles.container1}>
         <Ionicons
           style={{ marginTop: 35, marginStart: 15 }}

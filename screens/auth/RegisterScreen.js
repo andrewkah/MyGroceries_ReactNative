@@ -38,7 +38,7 @@ const RegisterScreen = ({ navigation }) => {
   
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar />
+        <StatusBar hidden={false} translucent={true} />
         <View>
           <KeyboardAwareScrollView>
             <View style={{ alignItems: "center" }}>

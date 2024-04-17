@@ -1,13 +1,12 @@
 import {
   ActivityIndicator,
-  Alert,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import InputField from "../../components/InputField";
 import { MaterialIcons, Ionicons } from "react-native-vector-icons";
 import { COLORS, FONTS, SIZES } from "../../constants/theme";
@@ -58,7 +57,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style="auto" />
+      <StatusBar hidden={false} translucent={true} />
       <View>
         <KeyboardAwareScrollView>
           <View style={{ alignItems: "center" }}>

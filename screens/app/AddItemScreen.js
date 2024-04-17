@@ -12,7 +12,7 @@ import { Ionicons } from "react-native-vector-icons";
 import { FONTS, SIZES, COLORS } from "../../constants/theme";
 import InputField from "../../components/InputField";
 import Button from "../../components/Button";
-import BASEURL from "../../config"
+import BASEURL, { getAuthToken, getUsername, instance } from "../../config"
 import axios from "axios";
 import { showAlert } from "../../components/Alert";
 
@@ -36,15 +36,15 @@ const AddItemScreen = ({ navigation, route }) => {
   const AddItem = async (name, quantity, price, unit, category) => {
     if (requiredForm()) {
       setIsLoading(true);
+      const userName = await getUsername();
       try {
-        const response = await axios.post(`${BASEURL}/category/item/add`, {
+        const response = await instance.post(`${BASEURL}/category/item/add/${userName}`, {
           name,
           quantity,
           price,
           unit,
           category,
         });
-        const result = response.data;
         navigation.navigate('ItemList', {categoryId: category})
       } catch (e) {
         let errorMessage = e.response?.data || "An error occurred";
@@ -57,7 +57,7 @@ const AddItemScreen = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style="auto" />
+      <StatusBar hidden={false} translucent={true} />
       <View style={styles.container1}>
         <Ionicons
           style={{ marginTop: 35, marginStart: 15 }}

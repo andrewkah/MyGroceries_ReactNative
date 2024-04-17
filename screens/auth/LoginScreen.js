@@ -65,7 +65,7 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style="auto" />
+      <StatusBar hidden={false} translucent={true} />
       <View>
         <KeyboardAwareScrollView>
           <View style={{ alignItems: "center" }}>

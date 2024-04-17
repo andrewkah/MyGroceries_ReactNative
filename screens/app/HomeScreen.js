@@ -11,13 +11,11 @@ import {
   ActivityIndicator,
 } from "react-native";
 import React, { useContext, useState, useLayoutEffect } from "react";
-import Button from "../../components/Button";
 import { Ionicons } from "react-native-vector-icons";
 import { COLORS, FONTS, SIZES } from "../../constants/theme";
 import { AuthContext } from "../../context/AuthContext";
 import { showAlert } from "../../components/Alert";
-import axios from "axios";
-import BASEURL from "../../config";
+import BASEURL, { getUsername, instance } from "../../config";
 import { MotiView } from "moti";
 
 const HomeScreen = ({ navigation, route }) => {
@@ -25,7 +23,7 @@ const HomeScreen = ({ navigation, route }) => {
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const { logout } = useContext(AuthContext);
   const [categoryTitles, setCategoryTitles] = useState([]);
-  const { registrationData } = useContext(AuthContext);
+  const [ registrationData, setRegistrationData ] = useState('');
   const data = [
     require("../../assets/images/vegetables1.jpg"),
     require("../../assets/images/I4iuDyn9.jpg"),
@@ -39,6 +37,11 @@ const HomeScreen = ({ navigation, route }) => {
     require("../../assets/images/spices1.jpg"),
     require("../../assets/images/cleaning1.jpg"),
   ];
+  
+  const returnUsername = async() => {
+    const userName = await getUsername();
+    setRegistrationData(userName);
+  }
 
   const renderItem = ({ item }) => {
     return (
@@ -56,23 +59,26 @@ const HomeScreen = ({ navigation, route }) => {
   };
 
   const fetchCategories = async () => {
+    const userName = await getUsername();
     setIsLoading(true);
     try {
-      const response = await axios.get(`${BASEURL}/category`);
+      const response = await instance.get(`${BASEURL}/category/${userName}`);
       let result = response.data;
       setCategoryTitles(result);
     } catch (error) {
       let errorMessage = error.response?.data || "Error fetching Categories";
       showAlert("danger", errorMessage, "Please try again");
+      console.log(errorMessage);
     } finally {
       setIsLoading(false);
     }
   };
 
   const DeleteCategory = async (idNo) => {
+    const userName = await getUsername();
     setIsDeleteLoading(true);
     try {
-      const response = await axios.delete(`${BASEURL}/category/${idNo}`);
+      const response = await instance.delete(`${BASEURL}/category/${idNo}/${userName}`);
       let result = response.data;
       showAlert("success", result);
     } catch (error) {
@@ -84,17 +90,18 @@ const HomeScreen = ({ navigation, route }) => {
   };
 
   useLayoutEffect(() => {
+    returnUsername();
     fetchCategories();
   }, [route.params, categoryTitles]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style="auto" />
+      <StatusBar hidden={false} translucent={true} />
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
-          paddingTop: SIZES.padding3,
+          paddingTop: SIZES.padding4,
           marginVertical: SIZES.padding,
         }}
       >
@@ -112,8 +119,8 @@ const HomeScreen = ({ navigation, route }) => {
           <Text style={{...FONTS.body4, color: COLORS.red}}>Log Out</Text>
         </Pressable>
       </View>
-      <View style={{ marginVertical: SIZES.padding }}>
-        <Text style={{ ...FONTS.h3 }}>Welcome {registrationData}👋</Text>
+      <View style={{ paddingVertical: SIZES.padding }}>
+        <Text style={{ ...FONTS.h3, paddingTop: SIZES.padding }}>Welcome {registrationData} 👋</Text>
       </View>
       <View style={{ flex: 1.5 }}>
         <View style={styles.listHeader}>
@@ -157,7 +164,7 @@ const HomeScreen = ({ navigation, route }) => {
               {isLoading ? (
                 <ActivityIndicator size="large" color={COLORS.primary} />
               ) : (
-                <Text>No items found</Text>
+                <Text>No categories found</Text>
               )}
             </View>
           )}

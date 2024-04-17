@@ -1,7 +1,7 @@
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { AuthProvider } from "./context/AuthContext";
 import AppNav from "./navigation/AppNav";
 import FlashMessage from "react-native-flash-message";
@@ -21,7 +21,7 @@ export default function App() {
     if (fontsLoaded) {
       setTimeout(async () => {
         await SplashScreen.hideAsync();
-      }, 3000);
+      }, 2000);
     }
   }, [fontsLoaded]);
 

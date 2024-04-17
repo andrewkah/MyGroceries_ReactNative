@@ -5,7 +5,7 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import Button from "../../components/Button";
 import InputField from "../../components/InputField";
 import { MaterialIcons, Ionicons } from "react-native-vector-icons";
@@ -57,7 +57,7 @@ const ResetPasswordScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style="auto" />
+      <StatusBar hidden={false} translucent={true} />
       <View>
         <KeyboardAwareScrollView>
           <View style={{ alignItems: "center" }}>

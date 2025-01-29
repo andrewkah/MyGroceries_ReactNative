@@ -11,11 +11,14 @@ export const instance = axios.create({
 
 export const refreshTokens = async (token) => {
   try {
-    const response = await axios.post(`https://mygroceriesapp-springboot.onrailway.com/api/v1/auth/refresh`, {
-      token,
-    });
+    const response = await axios.post(
+      `https://mygroceriesapp-springboot.onrailway.com/api/v1/auth/refresh`,
+      {
+        token,
+      }
+    );
     let result = response.data;
-    await setAuthToken(result.token, result.refreshToken)
+    await setAuthToken(result.token, result.refreshToken);
     return result.token;
   } catch (error) {
     let errorMessage = error.response?.data || "Error retrieving refresh token";
@@ -29,7 +32,7 @@ instance.interceptors.request.use(
     if (token) {
       const isExpired = await checkExpiration();
       if (isExpired) {
-        const refreshToken = await getRefreshAuthToken(); 
+        const refreshToken = await getRefreshAuthToken();
         const newAccessToken = await refreshTokens(refreshToken);
         if (newAccessToken) {
           request.headers.Authorization = `Bearer ${newAccessToken}`;
@@ -50,7 +53,7 @@ instance.interceptors.request.use(
 // Function to set the JWT token to AsyncStorage
 export const setAuthToken = async (token, refreshToken) => {
   try {
-    const time = (Date.now() + 1000 * 60 * 60 * 10).toString()
+    const time = (Date.now() + 1000 * 60 * 60 * 10).toString();
     await AsyncStorage.multiSet([
       ["jwtToken", token],
       ["jwtExpTime", time],
@@ -111,7 +114,7 @@ export const getUsername = async () => {
 
 export const checkExpiration = async () => {
   const expirationTime = await AsyncStorage.getItem("jwtExpTime");
-  const expirationTimeInSec = (parseInt(expirationTime, 10))/ 1000;
+  const expirationTimeInSec = parseInt(expirationTime, 10) / 1000;
   const currentTimeInSec = Math.floor(Date.now() / 1000);
   return currentTimeInSec >= expirationTimeInSec;
 };

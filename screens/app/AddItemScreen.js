@@ -12,8 +12,7 @@ import { Ionicons } from "react-native-vector-icons";
 import { FONTS, SIZES, COLORS } from "../../constants/theme";
 import InputField from "../../components/InputField";
 import Button from "../../components/Button";
-import BASEURL, { getAuthToken, getUsername, instance } from "../../config"
-import axios from "axios";
+import BASEURL, { getUsername, instance } from "../../config"
 import { showAlert } from "../../components/Alert";
 
 const AddItemScreen = ({ navigation, route }) => {

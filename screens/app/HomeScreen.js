@@ -49,11 +49,9 @@ const HomeScreen = ({ navigation, route }) => {
         from={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
       >
-        <TouchableOpacity style={{ alignItems: "center" }}>
-          <View style={styles.imageContainer}>
-            <Image source={item} style={styles.image} />
-          </View>
-        </TouchableOpacity>
+        <View style={styles.imageContainer}>
+          <Image source={item} style={styles.image} />
+        </View>
       </MotiView>
     );
   };
@@ -81,6 +79,7 @@ const HomeScreen = ({ navigation, route }) => {
       const response = await instance.delete(`${BASEURL}/category/${idNo}/${userName}`);
       let result = response.data;
       showAlert("success", result);
+      await fetchCategories();
     } catch (error) {
       let errorMessage = error.response?.data || "Error deleting Categories";
       showAlert("danger", errorMessage, "Please try again");
@@ -120,7 +119,7 @@ const HomeScreen = ({ navigation, route }) => {
         </Pressable>
       </View>
       <View style={{ paddingVertical: SIZES.padding }}>
-        <Text style={{ ...FONTS.h3, paddingTop: SIZES.padding }}>Welcome {registrationData} 👋</Text>
+        <Text style={{ ...FONTS.h3, paddingTop: SIZES.padding, textTransform: "capitalize", }}>Welcome {registrationData} 👋</Text>
       </View>
       <View style={{ flex: 1.5 }}>
         <View style={styles.listHeader}>

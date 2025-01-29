@@ -32,28 +32,29 @@ const ItemListScreen = ({ route, navigation }) => {
     }
   };
 
-  
   useEffect(() => {
     const backAction = () => {
-      navigation.navigate('Home'); 
+      navigation.navigate("Home");
       return true;
     };
 
     const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
+      "hardwareBackPress",
       backAction
     );
 
-    return () => backHandler.remove(); 
+    return () => backHandler.remove();
   }, []);
 
   useLayoutEffect(() => {
-      GetItems(route.params.categoryId);
+    GetItems(route.params.categoryId);
   }, [route.params, items]);
 
   const DeleteItem = async (idNo) => {
     try {
-      const response = await instance.delete(`${BASEURL}/category/item/${idNo}`);
+      const response = await instance.delete(
+        `${BASEURL}/category/item/${idNo}`
+      );
       let result = response.data;
       showAlert("success", result);
     } catch (error) {
@@ -69,31 +70,29 @@ const ItemListScreen = ({ route, navigation }) => {
         from={{ opacity: 0, translateY: 50 }}
         animate={{ opacity: 1, translateY: 0 }}
       >
-        <TouchableOpacity style={styles.items}>
-          <Text style={styles.nameText}>{item.name}</Text>
-          <Text style={styles.nameText}>{item.quantity}</Text>
-          <Text style={styles.nameText}>{item.price}</Text>
-          <Text style={styles.nameText}>{item.unit}</Text>
-        </TouchableOpacity>
-        <Ionicons
-          style={{ marginTop: 35, marginStart: 15 }}
-          name="pencil"
-          size={SIZES.icon1}
-          color={COLORS.gray}
+        <TouchableOpacity
+          style={styles.items}
           onPress={() =>
             navigation.navigate("UpdateItem", {
               itemId: item.itemId,
               formData: item,
             })
           }
-        />
-        <Ionicons
-          style={{ marginTop: 35, marginStart: 15 }}
-          name="trash"
-          size={SIZES.icon1}
-          color={COLORS.red}
-          onPress={() => DeleteItem(item.itemId)}
-        />
+        >
+          <Text style={styles.nameText}>{item.name}</Text>
+          <Text style={styles.nameText}>{item.quantity}</Text>
+          <Text style={styles.nameText}>{item.price}</Text>
+          <Text style={styles.nameText}>{item.unit}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Ionicons
+            style={styles.icon2}
+            name="trash"
+            size={SIZES.icon1}
+            color={COLORS.red}
+            onPress={() => DeleteItem(item.itemId)}
+          />
+        </TouchableOpacity>
       </MotiView>
     );
   };
@@ -106,17 +105,24 @@ const ItemListScreen = ({ route, navigation }) => {
           name="arrow-back"
           size={SIZES.icon1}
           color={COLORS.white}
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.navigate("Home")}
         />
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginLeft: -40 }}>
-        <Text
+        <View
           style={{
-            color: COLORS.white,
-            ...FONTS.h2,
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            marginLeft: -40,
           }}
         >
-          {route.params.category ? route.params.category : "Items"}
-        </Text>
+          <Text
+            style={{
+              color: COLORS.white,
+              ...FONTS.h2,
+            }}
+          >
+            {route.params.category ? route.params.category : "Items"}
+          </Text>
         </View>
       </View>
       <View
@@ -126,7 +132,11 @@ const ItemListScreen = ({ route, navigation }) => {
         }}
       >
         <FlatList
-        style={{ backgroundColor: COLORS.palest, borderRadius: SIZES.radius, paddingHorizontal: SIZES.padding0 }}
+          style={{
+            backgroundColor: COLORS.palest,
+            borderRadius: SIZES.radius,
+            paddingHorizontal: SIZES.padding0,
+          }}
           data={items}
           refreshing={true}
           ListEmptyComponent={() => (
@@ -166,14 +176,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
-    marginVertical: SIZES.padding,
+    marginVertical: SIZES.padding2,
   },
   items: {
-    flex: 1,
+    flex: 7,
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
-    padding: SIZES.padding,
+    padding: SIZES.padding2,
     borderRadius: SIZES.radius,
     borderWidth: 1,
     borderColor: COLORS.primary,
@@ -184,5 +194,10 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     ...FONTS.body2,
     textTransform: "capitalize",
+  },
+  icon2: {
+    flex: 1,
+    marginTop: 10,
+    marginStart: 15,
   },
 });

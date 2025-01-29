@@ -203,6 +203,7 @@ const styles = StyleSheet.create({
   header: {
     ...FONTS.h1,
     color: COLORS.white,
+    textTransform: "capitalize",
   },
   container3: {
     flex: 1,
@@ -215,6 +216,7 @@ const styles = StyleSheet.create({
   },
   input: {
     paddingVertical: SIZES.padding3,
+    textTransform: "capitalize",
   },
   label1: {
     ...FONTS.h2,

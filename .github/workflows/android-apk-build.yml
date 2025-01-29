@@ -39,9 +39,17 @@ jobs:
       - name: Build Android APK
         run: eas build --platform android --profile groceries --non-interactive
 
+      # Download the APK file
+      - name: Download APK from Expo
+        run: |
+          mkdir -p ./build-apks
+          EXPO_OUTPUT=$(eas build:list --json | jq -r '.[0].artifacts.buildUrl')
+          wget -O ./build-apks/app-release.apk "$EXPO_OUTPUT"
+          ls -la ./build-apks
+
       # Upload the APK file
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
           name: groceries-release-apk
-          path: ./app/build/outputs/apk/release/app-release.apk
+          path: ./build-apks/app-release.apk

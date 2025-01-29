@@ -1,0 +1,48 @@
+name: Expo APK Build
+
+on:
+  push:
+    branches:
+      - main # Trigger builds on push to the main branch
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the repository code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Set up node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22.13.0
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Install EAS CLI globally
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
+
+      # Authenticate with EAS
+      - name: Authenticate with EAS
+        run: eas login --token ${{ secrets.EAS_ACCESS_TOKEN }}
+
+      # Build the Android APK
+      - name: Build Android APK
+        run: eas build --platform android --profile release --non-interactive
+
+      # Upload the APK file
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: groceries-release-apk
+          path: ./app/build/outputs/apk/release/app-release.apk

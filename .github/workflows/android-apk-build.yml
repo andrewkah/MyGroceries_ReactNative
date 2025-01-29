@@ -24,17 +24,16 @@ jobs:
         with:
           node-version: 22.13.0
 
+      # Install EAS CLI globally
+      - name: 🏗 Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EAS_ACCESS_TOKEN }}
+
       # Install dependencies
       - name: Install dependencies
-        run: npm install
-
-      # Install EAS CLI globally
-      - name: Install EAS CLI
-        run: npm install -g eas-cli
-
-      # Authenticate with EAS
-      - name: Authenticate with EAS
-        run: eas login --token ${{ secrets.EAS_ACCESS_TOKEN }}
+        run: yarn install
 
       # Build the Android APK
       - name: Build Android APK

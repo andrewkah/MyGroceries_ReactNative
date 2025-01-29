@@ -24,8 +24,8 @@ jobs:
         with:
           node-version: 22.13.0
 
-      # Install EAS CLI globally
-      - name: 🏗 Setup EAS
+      # Install and Setup EAS
+      - name: Setup EAS
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
@@ -37,7 +37,7 @@ jobs:
 
       # Build the Android APK
       - name: Build Android APK
-        run: eas build --platform android --profile release --non-interactive
+        run: eas build --platform android --profile groceries --non-interactive
 
       # Upload the APK file
       - name: Upload APK

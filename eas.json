@@ -5,11 +5,6 @@
         "buildType": "apk"
       }
     },
-    "release": {
-      "android": {
-        "workflow": "managed"
-      }
-    },
     "preview2": {
       "android": {
         "gradleCommand": ":app:assembleRelease"

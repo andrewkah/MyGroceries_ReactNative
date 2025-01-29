@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
-const config = "https://mygroceriesapp-springboot.onrender.com/api/v1";
+const config = "https://mygroceriesapp-springboot.onrailway.com/api/v1";
 
 export const instance = axios.create({
   headers: {
@@ -11,7 +11,7 @@ export const instance = axios.create({
 
 export const refreshTokens = async (token) => {
   try {
-    const response = await axios.post(`https://mygroceriesapp-springboot.onrender.com/api/v1/auth/refresh`, {
+    const response = await axios.post(`https://mygroceriesapp-springboot.onrailway.com/api/v1/auth/refresh`, {
       token,
     });
     let result = response.data;

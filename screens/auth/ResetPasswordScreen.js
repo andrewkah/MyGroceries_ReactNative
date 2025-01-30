@@ -12,10 +12,9 @@ import { MaterialIcons, Ionicons } from "react-native-vector-icons";
 import { COLORS, FONTS, SIZES } from "../../constants/theme";
 import LoginSVG from "../../assets/images/groceries-svgrepo-com.svg";
 import { StatusBar } from "expo-status-bar";
-import axios from "axios";
 import { showAlert } from "../../components/Alert";
-import BASEURL from "../../config";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import instance from "../../config";
 
 const ResetPasswordScreen = ({ navigation }) => {
   const [newPassword, setNewPassword] = useState(null);
@@ -40,7 +39,7 @@ const ResetPasswordScreen = ({ navigation }) => {
     if (validateForm()) {
       setIsLoading(true);
       try {
-        const response = await axios.post(`${BASEURL}/auth/reset-password`, {
+        const response = await instance.post(`/auth/reset-password`, {
           token,
           newPassword,
         });
@@ -50,7 +49,7 @@ const ResetPasswordScreen = ({ navigation }) => {
       } catch (err) {
         showAlert("danger", "Error", err.message);
       } finally {
-        setIsLoading(false); 
+        setIsLoading(false);
       }
     }
   };
@@ -108,7 +107,7 @@ const ResetPasswordScreen = ({ navigation }) => {
                 />
               }
               inputType="password"
-              autoComplete={'password'}
+              autoComplete={"password"}
               errorSet={errors.password}
               errorText={errors.password}
             />

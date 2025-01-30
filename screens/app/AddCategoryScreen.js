@@ -12,9 +12,9 @@ import {
 } from "react-native";
 import { Ionicons } from "react-native-vector-icons";
 import React, { useState } from "react";
-import { MotiView } from "moti";
+// import { MotiView } from "moti";
 import { COLORS, FONTS, SIZES } from "../../constants/theme";
-import BASEURL, { getUsername, instance } from "../../config";
+import instance, { getUsername } from "../../config";
 import { showAlert } from "../../components/Alert";
 
 const AddCategoryScreen = ({ navigation }) => {
@@ -81,7 +81,7 @@ const AddCategoryScreen = ({ navigation }) => {
     const username = await getUsername();
     try {
       setIsLoading(true);
-      const category = await instance.post(`${BASEURL}/category/add`, {
+      const category = await instance.post(`/category/add`, {
         name,
         username,
       });
@@ -89,6 +89,7 @@ const AddCategoryScreen = ({ navigation }) => {
       let idNo = result.categoryId;
       navigation.navigate("Home", { categoryTitle: name, categoryId: idNo });
     } catch (e) {
+      console.log(e);
       let errorMessage = e.response?.data || "Could not submit Category";
       errorMessage && showAlert("danger", errorMessage, "Please try again");
     } finally {
@@ -98,11 +99,12 @@ const AddCategoryScreen = ({ navigation }) => {
 
   const renderItem = ({ item }) => {
     return (
-      <MotiView
-        style={styles.categoryList}
-        from={{ opacity: 0, translateY: 50 }}
-        animate={{ opacity: 1, translateY: 0 }}
-      >
+      // <MotiView
+      //   style={styles.categoryList}
+      //   from={{ opacity: 0, translateY: 50 }}
+      //   animate={{ opacity: 1, translateY: 0 }}
+      // >
+      <View style={styles.categoryList}>
         <TouchableOpacity
           style={{ alignItems: "center" }}
           onPress={() => {
@@ -114,7 +116,8 @@ const AddCategoryScreen = ({ navigation }) => {
           </View>
           <Text style={styles.nameText}>{item.title}</Text>
         </TouchableOpacity>
-      </MotiView>
+      </View>
+      // </MotiView>
     );
   };
 

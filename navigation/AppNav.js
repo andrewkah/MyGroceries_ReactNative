@@ -11,7 +11,7 @@ export default function AppNav() {
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size='large' color={COLORS.primary}/>
+        <ActivityIndicator size="large" color={COLORS.primary} />
       </View>
     );
   }

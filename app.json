@@ -43,6 +43,9 @@
         "projectId": "8fafd47b-32f1-4eba-83aa-b2a5b141fda7"
       }
     },
-    "owner": "kahy"
+    "owner": "kahy",
+    "plugins": [
+      "expo-font"
+    ]
   }
 }

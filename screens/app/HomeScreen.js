@@ -15,15 +15,15 @@ import { Ionicons } from "react-native-vector-icons";
 import { COLORS, FONTS, SIZES } from "../../constants/theme";
 import { AuthContext } from "../../context/AuthContext";
 import { showAlert } from "../../components/Alert";
-import BASEURL, { getUsername, instance } from "../../config";
-import { MotiView } from "moti";
+import instance, { getUsername } from "../../config";
+// import { MotiView } from "moti";
 
 const HomeScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const { logout } = useContext(AuthContext);
   const [categoryTitles, setCategoryTitles] = useState([]);
-  const [ registrationData, setRegistrationData ] = useState('');
+  const [registrationData, setRegistrationData] = useState("");
   const data = [
     require("../../assets/images/vegetables1.jpg"),
     require("../../assets/images/I4iuDyn9.jpg"),
@@ -37,22 +37,22 @@ const HomeScreen = ({ navigation, route }) => {
     require("../../assets/images/spices1.jpg"),
     require("../../assets/images/cleaning1.jpg"),
   ];
-  
-  const returnUsername = async() => {
+
+  const returnUsername = async () => {
     const userName = await getUsername();
     setRegistrationData(userName);
-  }
+  };
 
   const renderItem = ({ item }) => {
     return (
-      <MotiView
-        from={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-      >
-        <View style={styles.imageContainer}>
-          <Image source={item} style={styles.image} />
-        </View>
-      </MotiView>
+      // <MotiView
+      //   from={{ opacity: 0, scale: 0.9 }}
+      //   animate={{ opacity: 1, scale: 1 }}
+      // >
+      <View style={styles.imageContainer}>
+        <Image source={item} style={styles.image} />
+      </View>
+      // {/* </MotiView> */}
     );
   };
 
@@ -60,7 +60,7 @@ const HomeScreen = ({ navigation, route }) => {
     const userName = await getUsername();
     setIsLoading(true);
     try {
-      const response = await instance.get(`${BASEURL}/category/${userName}`);
+      const response = await instance.get(`/category/${userName}`);
       let result = response.data;
       setCategoryTitles(result);
     } catch (error) {
@@ -76,7 +76,7 @@ const HomeScreen = ({ navigation, route }) => {
     const userName = await getUsername();
     setIsDeleteLoading(true);
     try {
-      const response = await instance.delete(`${BASEURL}/category/${idNo}/${userName}`);
+      const response = await instance.delete(`/category/${idNo}/${userName}`);
       let result = response.data;
       showAlert("success", result);
       await fetchCategories();
@@ -107,26 +107,41 @@ const HomeScreen = ({ navigation, route }) => {
         <View style={styles.header}>
           <Text style={{ ...FONTS.h2 }}>My Groceries</Text>
         </View>
-        <Pressable style={{ marginBottom: SIZES.padding0, alignItems: 'center' }} onPress={() => {
-              logout();
-            }}>
+        <Pressable
+          style={{ marginBottom: SIZES.padding0, alignItems: "center" }}
+          onPress={() => {
+            logout();
+          }}
+        >
           <Ionicons
             name="log-out-outline"
             size={SIZES.icon1}
             color={COLORS.red}
           />
-          <Text style={{...FONTS.body4, color: COLORS.red}}>Log Out</Text>
+          <Text style={{ ...FONTS.body4, color: COLORS.red }}>Log Out</Text>
         </Pressable>
       </View>
       <View style={{ paddingVertical: SIZES.padding }}>
-        <Text style={{ ...FONTS.h3, paddingTop: SIZES.padding, textTransform: "capitalize", }}>Welcome {registrationData} 👋</Text>
+        <Text
+          style={{
+            ...FONTS.h3,
+            paddingTop: SIZES.padding,
+            textTransform: "capitalize",
+          }}
+        >
+          Welcome {registrationData} 👋
+        </Text>
       </View>
       <View style={{ flex: 1.5 }}>
         <View style={styles.listHeader}>
           <Text style={{ ...FONTS.body3 }}>Top Choices</Text>
         </View>
         <FlatList
-        style={{ backgroundColor: COLORS.palest, borderRadius: SIZES.radius, paddingHorizontal: SIZES.padding0 }}
+          style={{
+            backgroundColor: COLORS.palest,
+            borderRadius: SIZES.radius,
+            paddingHorizontal: SIZES.padding0,
+          }}
           data={data}
           horizontal={true}
           refreshing={true}
@@ -155,11 +170,21 @@ const HomeScreen = ({ navigation, route }) => {
           />
         </View>
         <FlatList
-          style={{ backgroundColor: COLORS.palest, borderRadius: SIZES.radius, paddingHorizontal: SIZES.padding0 }}
+          style={{
+            backgroundColor: COLORS.palest,
+            borderRadius: SIZES.radius,
+            paddingHorizontal: SIZES.padding0,
+          }}
           data={categoryTitles}
           refreshing={true}
           ListEmptyComponent={() => (
-            <View style={{ alignItems: "center", flex: 1, marginTop: SIZES.padding }}>
+            <View
+              style={{
+                alignItems: "center",
+                flex: 1,
+                marginTop: SIZES.padding,
+              }}
+            >
               {isLoading ? (
                 <ActivityIndicator size="large" color={COLORS.primary} />
               ) : (
@@ -174,7 +199,7 @@ const HomeScreen = ({ navigation, route }) => {
                 onPress={() =>
                   navigation.navigate("ItemList", {
                     categoryId: item.categoryId,
-                    category: item.name
+                    category: item.name,
                   })
                 }
               >

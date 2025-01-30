@@ -13,10 +13,9 @@ import { COLORS, FONTS, SIZES } from "../../constants/theme";
 import Button from "../../components/Button";
 import LoginSVG from "../../assets/images/groceries-svgrepo-com.svg";
 import { StatusBar } from "expo-status-bar";
-import axios from "axios";
 import { showAlert } from "../../components/Alert";
-import BASEURL from "../../config";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import instance from "../../config";
 
 const ForgotPasswordScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -36,7 +35,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
     if (validateForm()) {
       setIsLoading(true);
       try {
-        const response = await axios.post(`${BASEURL}/auth/forgot-password`, {
+        const response = await instance.post(`/auth/forgot-password`, {
           userName,
           email,
         });

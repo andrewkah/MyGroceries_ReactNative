@@ -12,7 +12,7 @@ import { Ionicons } from "react-native-vector-icons";
 import { FONTS, SIZES, COLORS } from "../../constants/theme";
 import InputField from "../../components/InputField";
 import Button from "../../components/Button";
-import BASEURL, { getUsername, instance } from "../../config"
+import instance, { getUsername } from "../../config";
 import { showAlert } from "../../components/Alert";
 
 const AddItemScreen = ({ navigation, route }) => {
@@ -37,15 +37,16 @@ const AddItemScreen = ({ navigation, route }) => {
       setIsLoading(true);
       const userName = await getUsername();
       try {
-        const response = await instance.post(`${BASEURL}/category/item/add/${userName}`, {
+        const response = await instance.post(`/category/item/add/${userName}`, {
           name,
           quantity,
           price,
           unit,
           category,
         });
-        navigation.navigate('ItemList', {categoryId: category})
+        navigation.navigate("ItemList", { categoryId: category });
       } catch (e) {
+        console.log(e);
         let errorMessage = e.response?.data || "An error occurred";
         showAlert("danger", "Error!", errorMessage);
       } finally {
@@ -149,9 +150,8 @@ const AddItemScreen = ({ navigation, route }) => {
         <Button
           label={"Add"}
           onPress={() => {
-           AddItem(itemName, quantity, price, unit, route.params?.categoryId);
-          }
-          }
+            AddItem(itemName, quantity, price, unit, route.params?.categoryId);
+          }}
         />
         {isLoading && <ActivityIndicator size="large" color={COLORS.primary} />}
       </View>

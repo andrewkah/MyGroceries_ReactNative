@@ -13,8 +13,8 @@ import { Ionicons } from "react-native-vector-icons";
 import { COLORS, FONTS, SIZES } from "../../constants/theme";
 import InputField from "../../components/InputField";
 import Button from "../../components/Button";
-import BASEURL, { instance } from "../../config";
 import { showAlert } from "../../components/Alert";
+import instance from "../../config";
 
 const UpdateItemScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +38,7 @@ const UpdateItemScreen = ({ navigation, route }) => {
       quantity -= counter;
       setIsLoading(true);
       try {
-        const response = await instance.put(`${BASEURL}/category/item/${idNo}`, {
+        const response = await instance.put(`/category/item/${idNo}`, {
           name,
           quantity,
           price,
@@ -49,6 +49,7 @@ const UpdateItemScreen = ({ navigation, route }) => {
           showAlert("success", `${result}, ${quantity} items remaining!`);
         }
       } catch (e) {
+        console.log(e);
         let errorMessage = e.response?.data || "An error occurred";
         showAlert("danger", "Error!", errorMessage);
       } finally {
@@ -77,20 +78,20 @@ const UpdateItemScreen = ({ navigation, route }) => {
   };
   useEffect(() => {
     const backAction = () => {
-      navigation.goBack(); 
+      navigation.goBack();
       return true;
     };
 
     const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
+      "hardwareBackPress",
       backAction
     );
 
-    return () => backHandler.remove(); 
+    return () => backHandler.remove();
   }, []);
 
   return (
-    <SafeAreaView style={{backgroundColor: COLORS.white}}>
+    <SafeAreaView style={{ backgroundColor: COLORS.white }}>
       <View style={styles.container}>
         <View style={styles.container2}>
           <Text style={styles.header}>{item.name}</Text>
@@ -123,7 +124,7 @@ const UpdateItemScreen = ({ navigation, route }) => {
             >
               {editable ? (
                 <TextInput
-                  style={{...FONTS.h4}}
+                  style={{ ...FONTS.h4 }}
                   value={quantity}
                   onChangeText={handleQuantityChange}
                   onBlur={toggleEditable}

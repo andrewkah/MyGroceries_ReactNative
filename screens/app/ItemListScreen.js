@@ -10,10 +10,10 @@ import {
 } from "react-native";
 import { Ionicons } from "react-native-vector-icons";
 import React, { useLayoutEffect, useState, useEffect } from "react";
-import { MotiView } from "moti";
+// import { MotiView } from "moti";
 import { COLORS, FONTS, SIZES } from "../../constants/theme";
-import BASEURL, { instance } from "../../config";
 import { showAlert } from "../../components/Alert";
+import instance from "../../config";
 
 const ItemListScreen = ({ route, navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +22,7 @@ const ItemListScreen = ({ route, navigation }) => {
   const GetItems = async (idNo) => {
     setIsLoading(true);
     try {
-      const resItems = await instance.get(`${BASEURL}/category/item/${idNo}`);
+      const resItems = await instance.get(`/category/item/${idNo}`);
       const result = resItems.data;
       setItems(result);
     } catch (error) {
@@ -65,11 +65,12 @@ const ItemListScreen = ({ route, navigation }) => {
 
   const renderItem = ({ item }) => {
     return (
-      <MotiView
-        style={styles.itemList}
-        from={{ opacity: 0, translateY: 50 }}
-        animate={{ opacity: 1, translateY: 0 }}
-      >
+      // <MotiView
+      //   style={styles.itemList}
+      //   from={{ opacity: 0, translateY: 50 }}
+      //   animate={{ opacity: 1, translateY: 0 }}
+      // >
+      <View style={styles.itemList}>
         <TouchableOpacity
           style={styles.items}
           onPress={() =>
@@ -93,7 +94,8 @@ const ItemListScreen = ({ route, navigation }) => {
             onPress={() => DeleteItem(item.itemId)}
           />
         </TouchableOpacity>
-      </MotiView>
+      </View>
+      // </MotiView>
     );
   };
 

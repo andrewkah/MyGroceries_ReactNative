@@ -1,8 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
-import BASEURL, {
+import instance, {
   getAuthToken,
   removeAuthToken,
   setAuthToken,
@@ -21,7 +20,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(`${BASEURL}/auth/signup`, {
+      const response = await instance.post("/auth/signup", {
         username,
         email,
         password,
@@ -33,6 +32,7 @@ export const AuthProvider = ({ children }) => {
       setAuthToken(result.token, result.refreshToken);
       setUsername(result.username);
     } catch (error) {
+      console.log(error);
       let errorMessage = error.response?.data || "Error signing up";
       showAlert(
         "danger",
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (username, password) => {
     setIsLoading(true);
     try {
-      const response = await axios.post(`${BASEURL}/auth/signin`, {
+      const response = await instance.post("/auth/signin", {
         username,
         password,
       });
@@ -57,6 +57,7 @@ export const AuthProvider = ({ children }) => {
       setAuthToken(userInfo.token, userInfo.refreshToken);
       setUsername(userInfo.username);
     } catch (error) {
+      console.log(error);
       let errorMessage = error.response?.data || "Error logging in";
       showAlert("danger", errorMessage, "Sign up if you are not logged in");
     } finally {
@@ -69,7 +70,9 @@ export const AuthProvider = ({ children }) => {
     setUserToken(null);
     AsyncStorage.removeItem("userInfo");
     removeAuthToken();
-    setIsLoading(false);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
   };
 
   const isLoggedIn = async () => {

@@ -6,7 +6,6 @@ import {
   View,
 } from "react-native";
 import React, { useContext, useState } from "react";
-
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import LoginSVG from "../../assets/images/groceries-svgrepo-com.svg";
 import Button from "../../components/Button";
@@ -82,9 +81,9 @@ const LoginScreen = ({ navigation }) => {
                 style={styles.icon}
               />
             }
-            keyBoardType='default'
+            keyBoardType="default"
             value={username}
-            autoComplete={'username'}
+            autoComplete={"username"}
             onChangeText={(text) => setUsername(text)}
             errorSet={errors.username}
             errorText={errors.username}
@@ -111,7 +110,7 @@ const LoginScreen = ({ navigation }) => {
               />
             }
             inputType="password"
-            autoComplete={'password'}
+            autoComplete={"password"}
             fieldButtonLabel={"Forgot?"}
             fieldButtonFunction={() => navigation.navigate("ForgotPassword")}
             value={password}
@@ -124,7 +123,7 @@ const LoginScreen = ({ navigation }) => {
             label={"Login"}
             onPress={() => {
               checkPasswordValidity(password);
-              if (validateForm()) login(username, password)
+              if (validateForm()) login(username, password);
             }}
           />
           <View style={styles.register}>

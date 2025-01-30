@@ -3,13 +3,14 @@ name: Expo APK Build
 on:
   push:
     branches:
-      - main # Trigger builds on push to the main branch
+      - main
   pull_request:
     branches:
       - main
 
 jobs:
-  build:
+  build-apk:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action == 'closed')
     name: Build Android APK
     runs-on: ubuntu-latest
 
@@ -39,17 +40,16 @@ jobs:
       - name: Build Android APK
         run: eas build --platform android --profile groceries --non-interactive
 
-      # Download the APK file
-      - name: Download APK from Expo
-        run: |
-          mkdir -p ./build-apks
-          EXPO_OUTPUT=$(eas build:list --json | jq -r '.[0].artifacts.buildUrl')
-          wget -O ./build-apks/app-release.apk "$EXPO_OUTPUT"
-          ls -la ./build-apks
+  download-apk:
+    name: Download Expo APK
+    needs: build-apk
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-      # Upload the APK file
-      - name: Upload APK
-        uses: actions/upload-artifact@v3
-        with:
-          name: groceries-release-apk
-          path: ./build-apks/app-release.apk
+      - name: Download Expo APK
+        run: |
+          expo fetch:android:apk --non-interactive
+          mkdir -p ./apks
+          mv *.apk ./apks/

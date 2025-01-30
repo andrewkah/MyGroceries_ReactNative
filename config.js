@@ -1,9 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
-const config = "https://mygroceriesapp-springboot.onrailway.com/api/v1";
-
-export const instance = axios.create({
+const instance = axios.create({
+  baseURL: "https://mygroceriesapp-production.up.railway.app/api/v1",
   headers: {
     "Content-Type": "application/json",
   },
@@ -12,7 +11,7 @@ export const instance = axios.create({
 export const refreshTokens = async (token) => {
   try {
     const response = await axios.post(
-      `https://mygroceriesapp-springboot.onrailway.com/api/v1/auth/refresh`,
+      `https://mygroceriesapp-production.up.railway.app/api/v1/auth/refresh`,
       {
         token,
       }
@@ -118,5 +117,4 @@ export const checkExpiration = async () => {
   const currentTimeInSec = Math.floor(Date.now() / 1000);
   return currentTimeInSec >= expirationTimeInSec;
 };
-
-export default config;
+export default instance;

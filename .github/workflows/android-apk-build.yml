@@ -48,6 +48,9 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Install expo-cli
+        run: npm install -g expo-cli
+
       - name: Download Expo APK
         run: |
           expo fetch:android:apk --non-interactive

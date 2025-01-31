@@ -53,6 +53,6 @@ jobs:
 
       - name: Download Expo APK
         run: |
-          expo fetch:android:apk --non-interactive
+          CI=1 npx expo fetch:android:apk
           mkdir -p ./apks
           mv *.apk ./apks/

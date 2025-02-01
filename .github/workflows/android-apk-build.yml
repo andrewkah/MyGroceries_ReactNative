@@ -35,20 +35,4 @@ jobs:
       # Build the Android APK
       - name: Build Android APK
         run: |
-          eas build --platform android --profile groceries --non-interactive --json > build-info.json
-          BUILD_ID=$(jq -r '.builds[0].id' build-info.json)
-          LOGS_URL=$(jq -r '.builds[0].logsUrl' build-info.json)
-          echo "Build ID: $BUILD_ID"
-          echo "Logs URL: $LOGS_URL"
-          echo "build_id=$BUILD_ID" >> $GITHUB_OUTPUT
-          echo "logs_url=$LOGS_URL" >> $GITHUB_OUTPUT
-
-      - name: Upload Build ID as Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-id
-          path: build-info.json
-
-      - name: Display Logs Link
-        run: |
-          echo "Build Logs URL: ${{ steps.build.outputs.logs_url }}"
+          eas build --platform android --profile groceries --non-interactive

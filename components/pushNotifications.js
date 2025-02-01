@@ -3,10 +3,8 @@ import { Text, View, Button, Platform } from "react-native";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import { showAlert } from "./Alert";
-import axios from "axios";
-import BASEURL from "../config";
-
 import NetInfo from "@react-native-community/netinfo";
+import instance from "../config";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -71,9 +69,6 @@ export default function PushNotifications() {
         {
           console.log("Connected");
           getQuantityItems();
-          // if (itemArray.length !== 0) {
-
-          // }
           console.log("Done");
         }
       } else {
@@ -84,7 +79,7 @@ export default function PushNotifications() {
 
   const getQuantityItems = async () => {
     try {
-      const response = await axios.get(`${BASEURL}/category/item/quantity`);
+      const response = await instance.get(`/category/item/quantity`);
       let quantityItems = response.data;
       setItemArray(quantityItems);
       console.log(quantityItems);

@@ -4,13 +4,9 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
   build-apk:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action == 'closed')
     name: Build Android APK
     runs-on: ubuntu-latest
 

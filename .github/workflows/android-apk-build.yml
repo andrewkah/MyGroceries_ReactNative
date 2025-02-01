@@ -34,21 +34,8 @@ jobs:
 
       # Build the Android APK
       - name: Build Android APK
-        run: eas build --platform android --profile groceries --non-interactive
-
-  download-apk:
-    name: Download Expo APK
-    needs: build-apk
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Install expo-cli
-        run: npm install -g eas-cli
-
-      - name: Download Expo APK
         run: |
-          BUILD_ID=$(eas build:list --platform android --status finished --json | jq -r '.[0].id')
-          ARTIFACT_LINK=$(eas build:show --platform android --build-id $BUILD_ID --json | jq -r '.artifacts[0].url')
-          curl -L -o ./apk/app.apk $ARTIFACT_LINK
+          eas build --platform android --profile groceries --non-interactive --json > build-info.json
+          BUILD_ID=$(jq -r '.builds[0].id' build-info.json)
+          echo "Build ID: $BUILD_ID"
+          echo "build_id=$BUILD_ID" >> $GITHUB_OUTPUT
